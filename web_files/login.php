@@ -1,9 +1,6 @@
-<!DOCTYPE html>
 <?php include("navbar.php")?>
 
 <?php
-session_start(); // Start the session
-
 // Initialize the database connection
 $databasePath = 'database/lts-database.db';
 $pdo = new PDO("sqlite:$databasePath");
@@ -26,23 +23,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Verify the hashed password
         if ($hashed_password === $result['hashed_password']) {
-            $_SESSION['loggedin'] = true;
-            $_SESSION['username'] = $username;
             $message = "Login successful!";
-            // You can redirect the user to another page here
+            // You can redirect the user to another page or set session variables here
         } else {
             $message = "Invalid username or password!";
         }
     } else {
         $message = "Invalid username or password!";
     }
-}
-
-// Check if user is logged in
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-    $loggedin = true;
-} else {
-    $loggedin = false;
 }
 ?>
 
@@ -61,19 +49,15 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     <p><?php echo $message; ?></p>
 <?php endif; ?>
 
-<?php if ($loggedin): ?>
-    <p>You are logged in as <?php echo $_SESSION['username']; ?>. <a href="logout.php">Logout</a></p>
-<?php else: ?>
-    <form action="" method="post">
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username" required><br>
+<form action="" method="post">
+    <label for="username">Username:</label><br>
+    <input type="text" id="username" name="username" required><br>
 
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" required><br>
+    <label for="password">Password:</label><br>
+    <input type="password" id="password" name="password" required><br>
 
-        <input type="submit" value="Login">
-    </form>
-<?php endif; ?>
+    <input type="submit" value="Login">
+</form>
 
 </body>
 </html>
