@@ -49,14 +49,34 @@ body {
     background-color: #555;
 }
 
+/* Specificity increased for tab styles */
+body .tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
 
-.login-status {
-    text-align: center;
-    margin-top: 20px;
+body .tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
 }
-.logged-in {
-    color: green;
+
+body .tab button:hover {
+    background-color: #ddd;
 }
-.logged-out {
-    color: red;
+
+body .tab button.active {
+    background-color: #ccc;
+}
+
+body .tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
 }
