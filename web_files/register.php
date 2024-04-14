@@ -1,5 +1,6 @@
-<?php include("navbar.php")?>
-
+<?php 
+include("navbar.php");
+?>
 <?php
 // Initialize the database connection
 $databasePath = 'database/lts-database.db';

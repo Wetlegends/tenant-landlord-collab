@@ -1,3 +1,6 @@
+<?php 
+include("check_login.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,8 +20,12 @@
             <li><a href="#" class="nav-link">Bookings</a></li>
             <li><a href="#" class="nav-link">Help</a></li>
             <li><a href="#" class="nav-link">Contact Landlord</a></li>
-            <li><a href="login.php" class="nav-link">Login</a></li>
-            <li><a href="register.php" class="nav-link">Register</a></li>
+            <?php if ($loggedin): ?>
+                <li><a href="profile.php" class="nav-link">Profile</a></li>
+            <?php else: ?>
+                <li><a href="login.php" class="nav-link">Login</a></li>
+            <?php endif; ?>
+          
             
         </ul>
     </div>

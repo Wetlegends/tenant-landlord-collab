@@ -1,6 +1,10 @@
-<?php include("navbar.php")?>
+<?php 
+include("navbar.php");
+?>
+
 
 <?php
+
 // Initialize the database connection
 $databasePath = 'database/lts-database.db';
 $pdo = new PDO("sqlite:$databasePath");
@@ -23,8 +27,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Verify the hashed password
         if ($hashed_password === $result['hashed_password']) {
+            $_SESSION['loggedin'] = true;
+            $_SESSION['username'] = $username;
             $message = "Login successful!";
-            // You can redirect the user to another page or set session variables here
+            header('Location: index.php'); // Redirect to the home page or another page
+            exit; // Stop the script
         } else {
             $message = "Invalid username or password!";
         }
@@ -33,6 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
+<!-- Your HTML content for the login page -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -59,5 +68,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <input type="submit" value="Login">
 </form>
 
+<br>
+
+<a href="register.php" class="btn btn-primary">Register</a>
+
+
 </body>
 </html>
+

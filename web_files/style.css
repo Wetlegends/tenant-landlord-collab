@@ -50,3 +50,13 @@ body {
 }
 
 
+.login-status {
+    text-align: center;
+    margin-top: 20px;
+}
+.logged-in {
+    color: green;
+}
+.logged-out {
+    color: red;
+}
