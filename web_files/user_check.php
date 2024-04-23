@@ -1,21 +1,18 @@
 <?php
-//session_start(); // Start the session
 
-// Get current page filename
 $current_page = basename($_SERVER['PHP_SELF']);
 
 // Check if user is not logged in and not on the login or register page
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     if ($current_page != 'login.php' && $current_page != 'register.php') {
         header('Location: login.php'); // Redirect to login page
-        exit; // Stop the script
+        exit; 
     }
 }
 
 // Set the $loggedin variable
 $loggedin = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true;
 
-// Database connection for SQLite
 $databasePath = 'database/lts-database.db';
 $db = new SQLite3($databasePath);
 
@@ -38,7 +35,7 @@ $result = $stmt->execute();
 
 if ($result) {
     $user = $result->fetchArray(SQLITE3_ASSOC);
-    $user_type = $user['user_type']; // 'landlord' or 'tenant'
+    $user_type = $user['user_type']; 
 }
 ?>
 

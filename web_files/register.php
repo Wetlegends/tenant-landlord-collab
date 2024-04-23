@@ -2,11 +2,11 @@
 include("navbar.php");
 ?>
 <?php
-// Initialize the database connection
+
 $databasePath = 'database/lts-database.db';
 $pdo = new PDO("sqlite:$databasePath");
 
-// Check if the form is submitted
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];

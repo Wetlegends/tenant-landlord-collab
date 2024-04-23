@@ -5,7 +5,7 @@ include("user_check.php")?>
 // Redirect if user is a landlord
 if ($user_type === 'Landlord') {
     header('Location: payments_landlord.php'); // Redirect to landlord page
-    exit; // Stop the script
+    exit; 
 }
 ?>
 
@@ -22,7 +22,7 @@ if (!$db) {
 // Username from UserCredentials table
 $username = $_SESSION['username'];  
 
-// SQL query to fetch user information using JOIN operation
+
 $query = "SELECT u.user_id, u.user_fname, u.user_lname, u.user_email, u.user_type
           FROM Users AS u
           JOIN UserCredentials AS uc ON u.username = uc.username
@@ -70,11 +70,10 @@ if ($result) {
 <html>
 <head>
     <title>Payment Tabs</title>
-    <link rel="stylesheet" href="style.css"> <!-- Link to your style.css file -->
+    <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
 
-<h2>Payments</h2>
 
 <form action="payments.php" method="post">
     <label for="property">Select Property:</label>
@@ -86,30 +85,50 @@ if ($result) {
             </option>
         <?php endwhile; ?>
     </select>
-    <br><br>
-    <input type="submit" value="Submit" style="display: none;">
-    <br><br>
 </form>
-
-
-<!-- ... rest of your HTML code ... -->
 
 
 
 
 <div class="tab">
-    <button class="tablinks" onclick="openTab(event, 'PaymentInfo')">Payment Information</button>
+    <button class="tablinks" onclick="openTab(event, 'PaymentInfo')">New Payment</button>
     <button class="tablinks" onclick="openTab(event, 'UpcomingPayments')">Upcoming Payments</button>
     <button class="tablinks" onclick="openTab(event, 'PaymentHistory')">Payment History</button>
 </div>
 
 <div id="PaymentInfo" class="tabcontent">
     <h3>Payment Information</h3>
-    <p>Content for Payment Information tab</p>
-
-
+    <form action="process_payment.php" method="post" id="paymentForm">
+        <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
+        <input type="hidden" name="property_id" value="<?php echo isset($_POST['property']) ? $_POST['property'] : ''; ?>">
+        <div>
+            <label for="card_number">Card Number:</label>
+            <input type="text" id="card_number" name="card_number" required>
+            <br>
+        </div>
+        <div>
+            <label for="card_expiry">Expiry Date:</label>
+            <input type="text" id="card_expiry" name="card_expiry" placeholder="MM/YY" required>
+            <br>
+        </div>
+        <div>
+            <label for="card_cvv">CVV:</label>
+            <input type="text" id="card_cvv" name="card_cvv" required>
+            <br>
+        </div>
+        <div>
+            <label for="payment_amount">Amount:</label>
+            <input type="number" id="payment_amount" name="payment_amount" required>
+            <br>
+        </div>
+        <div>
+            <label for="payment_description">Payment Description:</label>
+            <textarea id="payment_description" name="payment_description" required></textarea>
+            <br>
+        </div>
+        <button type="submit">Submit Payment</button>
+    </form>
 </div>
-
 
 
 
@@ -120,51 +139,66 @@ if ($result) {
 
     <?php
 
-    function calculateMonthlyInstallments($rentStartDate, $rentEndDate) {
-         $installments = array();
+function calculateMonthlyInstallments($rentStartDate, $rentEndDate, $historyArray) {
+    $installments = array();
 
     $startDate = new DateTime($rentStartDate);
     $endDate = new DateTime($rentEndDate);
     $currentDate = new DateTime();
 
+    
+    $paymentsMade = array();
+    foreach ($historyArray as $payment) {
+        $paymentDate = new DateTime($payment['payment_date']);
+        $paymentsMade[$paymentDate->format('Y-m')] = true;
+    }
+
     $interval = new DateInterval('P1M'); // 1 month interval
-
-    // Check if current date is within rent period
-    if ($currentDate >= $startDate && $currentDate <= $endDate) {
-        $remainingMonths = $startDate->diff($endDate)->m + ($startDate->diff($endDate)->y * 12);
-
-
-        while ($startDate <= $endDate) {
-            $installment = array(
-                'date' => $startDate->format('Y-m-d'),
-            );
-            $installments[] = $installment;
-
+    while ($startDate <= $endDate) {
+        if ($startDate < $currentDate) {
             $startDate->add($interval);
+            continue;
         }
+        $installmentDate = $startDate->format('Y-m');
+
+        // Check if a payment has been made for this month and year
+        if (!isset($paymentsMade[$installmentDate])) {
+            $installments[] = array(
+                'date' => $startDate->format('Y-m-d'), // Format date for display
+            );
+        }
+        $startDate->add($interval);
     }
 
     return $installments;
-    }
+}
+
+$historyArray = [];
+while ($row = $history->fetchArray(SQLITE3_ASSOC)) {
+    $historyArray[] = $row;
+}
 
 
-    
 
-    function getUpcomingPayments($rentEndDate, $history) {
-        $upcomingPayments = array();
-        $endDate = new DateTime($rentEndDate);
-        $currentDate = new DateTime();
+function getUpcomingPayments($rentEndDate, $history) {
+    $upcomingPayments = array();
+    $endDate = new DateTime($rentEndDate);
+    $currentDate = new DateTime();
 
-        while ($row = $history->fetchArray(SQLITE3_ASSOC)) {
-            $paymentDate = new DateTime($row['payment_date']);
+    while ($row = $history->fetchArray(SQLITE3_ASSOC)) {
+        $paymentDate = new DateTime($row['payment_date']);
 
-            if ($paymentDate > $currentDate && $paymentDate <= $endDate) {
-                $upcomingPayments[] = $row;
-            }
+        if ($paymentDate > $currentDate && $paymentDate <= $endDate) {
+            $upcomingPayments[] = $row;
         }
-
-        return $upcomingPayments;
     }
+
+    return $upcomingPayments;
+}
+
+
+
+
 
     if (isset($_POST['property'])) {
         $selectedRentalId = $_POST['property'];
@@ -172,35 +206,44 @@ if ($result) {
         $rentStartDate = $row['rent_start'];
         $rentEndDate = $row['rent_end'];
 
-        $installments = calculateMonthlyInstallments($rentStartDate, $rentEndDate);
 
-        $upcomingPayments = getUpcomingPayments($rentEndDate, $history);
+$installments = calculateMonthlyInstallments($rentStartDate, $rentEndDate, $historyArray);
+$upcomingPayments = getUpcomingPayments($rentEndDate, $history); 
 
-        if (!empty($installments) && !empty($upcomingPayments)): ?>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($installments as $installment): ?>
-                        <?php foreach ($upcomingPayments as $payment): ?>
-                            <tr>
-                                <td><?php echo $installment['date']; ?></td>
-                                <td><?php echo $payment['payment_amount']; ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        <?php else: ?>
-            <p>No upcoming payments available.</p>
-        <?php endif;
+
+while ($row = $history->fetchArray(SQLITE3_ASSOC)): ?>
+    <tr>
+        
+        <td><?php $defaultPaymentAmount = $row['payment_amount']; ?></td>
+    </tr>
+<?php endwhile; ?>
+
+<?php
+
+if (!empty($installments)): ?>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($installments as $installment): ?>
+                <tr>
+                    <td><?php echo $installment['date']; ?></td>
+                    <td><?php echo isset($upcomingPayments[0]) ? $upcomingPayments[0]['payment_amount'] : $defaultPaymentAmount; ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else: ?>
+    <p>No upcoming payments available.</p>
+<?php endif;
     }
     ?>
 </div>
+
 
 <div id="PaymentHistory" class="tabcontent">
     <h3>Payment History</h3>
@@ -227,30 +270,28 @@ if ($result) {
 
 <script>
     function openTab(evt, tabName) {
-        // Declare all variables
+        
         let i, tabcontent, tablinks;
 
-        // Get all elements with class="tabcontent" and hide them
+        
         tabcontent = document.getElementsByClassName("tabcontent");
         for (i = 0; i < tabcontent.length; i++) {
             tabcontent[i].style.display = "none";
         }
 
-        // Get all elements with class="tablinks" and remove the class "active"
         tablinks = document.getElementsByClassName("tablinks");
         for (i = 0; i < tablinks.length; i++) {
             tablinks[i].className = tablinks[i].className.replace(" active", "");
         }
 
-        // Show the current tab, and add an "active" class to the button that opened the tab
+        
         document.getElementById(tabName).style.display = "block";
         evt.currentTarget.className += " active";
     }
 
-    // Open the default tab
+  
     document.getElementsByClassName("tablinks")[0].click();
 </script>
 
 </body>
 </html>
-

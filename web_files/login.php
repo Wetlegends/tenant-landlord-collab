@@ -5,7 +5,7 @@ include("navbar.php");
 
 <?php
 
-// Initialize the database connection
+
 $databasePath = 'database/lts-database.db';
 $pdo = new PDO("sqlite:$databasePath");
 
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['username'] = $username;
             $message = "Login successful!";
             header('Location: index.php'); // Redirect to the home page or another page
-            exit; // Stop the script
+            exit; 
         } else {
             $message = "Invalid username or password!";
         }
@@ -41,7 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<!-- Your HTML content for the login page -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -59,18 +58,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php endif; ?>
 
 <form action="" method="post">
-    <label for="username">Username:</label><br>
-    <input type="text" id="username" name="username" required><br>
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required>
 
-    <label for="password">Password:</label><br>
-    <input type="password" id="password" name="password" required><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br><br>
 
     <input type="submit" value="Login">
+<br><br>
+    <a href="register.php" class="btn btn-primary">Register</a>
 </form>
 
 <br>
 
-<a href="register.php" class="btn btn-primary">Register</a>
+
 
 
 </body>

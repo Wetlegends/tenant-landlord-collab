@@ -16,10 +16,10 @@ include("check_login.php");
         <ul class="nav-menu">
             <li><a href="index.php" class="nav-link">Home</a></li>
             <li><a href="payments.php" class="nav-link">Payments</a></li>
-            <li><a href="#" class="nav-link">Maintenance</a></li>
-            <li><a href="#" class="nav-link">Bookings</a></li>
-            <li><a href="#" class="nav-link">Help</a></li>
-            <li><a href="contact_landlord.php" class="nav-link">Contact Landlord</a></li>
+            <li><a href="maintenance.php" class="nav-link">Maintenance</a></li>
+            <li><a href="properties.php" class="nav-link">Properties</a></li>
+            <li><a href="help_page.php" class="nav-link">Help</a></li>
+            <!--<li><a href="contact_landlord.php" class="nav-link">Contact Landlord</a></li>-->
             <?php if ($loggedin): ?>
                 <li><a href="profile.php" class="nav-link">Profile</a></li>
             <?php else: ?>

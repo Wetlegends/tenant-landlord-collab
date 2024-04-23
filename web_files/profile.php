@@ -1,16 +1,5 @@
 <?php include("navbar.php")?>
-
-
-<!-- Visual Indicator for Login Status -->
-<div class="login-status">
-    <?php if ($loggedin): ?>
-        <p class="logged-in">You are logged in as <?php echo $_SESSION['username']; ?>. <a href="logout.php">Logout</a></p>
-    <?php else: ?>
-        <p class="logged-out">You are not logged in. <a href="login.php">Login</a></p>
-    <?php endif; ?>
-</div>
-
-
+<link rel="stylesheet" href="styles.css">
 
 
 <?php
@@ -23,9 +12,9 @@ if (!$db) {
 }
 
 // Username from UserCredentials table
-$username = $_SESSION['username'];  // You can replace this with the actual username
+$username = $_SESSION['username'];  
 
-// SQL query to fetch user information using JOIN operation
+
 $query = "SELECT u.user_id, u.user_fname, u.user_lname, u.user_email, u.user_type
           FROM Users AS u
           JOIN UserCredentials AS uc ON u.username = uc.username
@@ -39,20 +28,26 @@ $result = $stmt->execute();
 if ($result) {
     $user = $result->fetchArray(SQLITE3_ASSOC);
     
+
     if ($user) {
-        // Display user information
-        echo "User ID: " . $user['user_id'] . "<br>";
-        echo "First Name: " . $user['user_fname'] . "<br>";
-        echo "Last Name: " . $user['user_lname'] . "<br>";
-        echo "Email: " . $user['user_email'] . "<br>";
-        echo "User Type: " . $user['user_type'] . "<br>";
+        echo '<div class="user-profile">';
+        echo "<div class='logged-in'>You are logged in as " .$_SESSION['username'] . ' '. '<a href="logout.php">Logout</a></p>'; 
+        echo "<div class='user-detail'><strong>User ID:</strong> " . $user['user_id'] . "</div>";
+        echo "<div class='user-detail'><strong>First Name:</strong> " . $user['user_fname'] . "</div>";
+        echo "<div class='user-detail'><strong>Last Name:</strong> " . $user['user_lname'] . "</div>";
+        echo "<div class='user-detail'><strong>Email:</strong> " . $user['user_email'] . "</div>";
+        echo "<div class='user-detail'><strong>User Type:</strong> " . $user['user_type'] . "</div>";
+        
+        echo '</div>';
     } else {
-        echo "No user found with the given username.";
+        echo '<p class="error">No user found with the given username.</p>';
     }
+   
+    
 } else {
     echo "Error executing query: " . $db->lastErrorMsg();
 }
 
-// Close the database connection
+
 $db->close();
 ?>

@@ -1,9 +1,22 @@
+/* Global Styles */
 body {
     font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
     margin: 0;
     padding: 0;
+    line-height: 1.6;
 }
 
+a {
+    color: #0066cc;
+}
+
+a:hover {
+    color: #0056b3;
+}
+
+/* Navbar Styles */
 .navbar {
     background-color: #333;
     color: #fff;
@@ -28,8 +41,8 @@ body {
 
 .nav-menu {
     list-style-type: none;
-    padding: 0;
     margin: 0;
+    padding: 0;
     display: flex;
 }
 
@@ -49,14 +62,14 @@ body {
     background-color: #555;
 }
 
-/* Specificity increased for tab styles */
-body .tab {
+/* Tab Styles */
+.tab {
     overflow: hidden;
     border: 1px solid #ccc;
     background-color: #f1f1f1;
 }
 
-body .tab button {
+.tab button {
     background-color: inherit;
     float: left;
     border: none;
@@ -66,17 +79,298 @@ body .tab button {
     transition: 0.3s;
 }
 
-body .tab button:hover {
+.tab button:hover {
     background-color: #ddd;
 }
 
-body .tab button.active {
+.tab button.active {
     background-color: #ccc;
 }
 
-body .tabcontent {
+.tabcontent {
     display: none;
     padding: 6px 12px;
     border: 1px solid #ccc;
     border-top: none;
 }
+
+/* Property Styles */
+.property-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Creates 4 columns */
+    grid-gap: 20px; 
+    padding: 20px;
+}
+
+.property-card {
+    background: #fff; 
+    border: 1px solid #ccc; 
+    border-radius: 8px; 
+    overflow: hidden; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+}
+
+.property-image {
+    width: 100%; /* Ensures the image covers the card width */
+    height: 200px; /* Fixed height for uniformity */
+    object-fit: cover; 
+}
+
+.property-info {
+    padding: 10px;
+}
+
+@media (max-width: 1200px) {
+    .property-grid {
+        grid-template-columns: repeat(2, 1fr); 
+    }
+}
+
+@media (max-width: 600px) {
+    .property-grid {
+        grid-template-columns: 1fr; 
+    }
+}
+
+
+/* Form Styles */
+form {
+    padding: 10px;
+    background: #f1f1f1;
+    margin: 10px;
+}
+
+form input[type="file"] {
+    margin: 5px 0;
+}
+
+/* Profile Page Specific */
+.profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto 20px;
+}
+
+.user-profile {
+    background-color: #fff;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 300px; 
+}
+
+.user-detail {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #555;
+}
+
+.error {
+    color: red;
+    text-align: center;
+}
+
+
+
+
+/* Payment History Page Specific Styles */
+
+/* Table Styling */
+table {
+    width: 100%; 
+    border-collapse: collapse; 
+    margin: 20px 0; 
+}
+
+thead {
+    background-color: #333;
+    color: #fff;
+}
+
+th, td {
+    padding: 12px; 
+    border: 1px solid #ddd; 
+    text-align: left; 
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #f9f9f9; 
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1; 
+}
+
+h3 {
+    padding: 20px;
+    color: #333;
+    font-size: 24px;
+    text-align: center;
+}
+
+
+
+/* Property Selection Styles */
+select {
+    width: 25%; 
+    padding: 8px 12px; 
+    margin-top: 10px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); 
+    background-color: white; 
+    cursor: pointer; 
+    appearance: none; 
+}
+
+select:hover {
+    border-color: #bbb; 
+}
+
+
+label {
+    display: block; 
+    margin: 20px 0 5px; 
+    color: #333; 
+    font-size: 16px; 
+}
+
+/* Style for the submit button */
+input[type="submit"] {
+    background-color: #4CAF50; 
+    color: white; 
+    padding: 12px 20px; 
+    border: none; 
+    border-radius: 4px; 
+    cursor: pointer; 
+
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049; 
+}
+
+/*Password*/
+input[type="password"], textarea {
+    width: calc(100% - 24px); 
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+
+
+
+/* General Styling for the form */
+form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+input[type="text"], textarea {
+    width: calc(100% - 24px); 
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button[type="submit"] {
+    background-color: #4CAF50; 
+    color: white; 
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049; 
+}
+
+/* Styling for the announcements section */
+section {
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+article {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+article h2 {
+    color: #333;
+    font-size: 22px;
+}
+
+article p {
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Smaller text for metadata */
+article p:last-child {
+    font-size: 14px;
+    color: #999;
+    margin-top: 10px;
+    text-align: right;
+}
+
+
+.delete-button[type="submit"] {
+    padding: 4px 6px; 
+    font-size: 0.7rem; 
+    color: white;
+    background-color: #e74c3c; 
+    border: none;
+    border-radius: 3px; 
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    width: auto; 
+    min-width: 50px; 
+}
+
+.delete-button[type="submit"]:hover {
+    background-color: #c0392b; 
+}
+
+/* Additional spacing */
+.delete-button[type="submit"] {
+    margin-left: 10px; 
+}
+
+.delete-form {
+    background: none; 
+    padding: 0;
+    margin: 0; 
+    border: none;
+    box-shadow: none; 
+}
+
+/* Adjust the delete button within the form for better alignment */
+.delete-form button[type="submit"] {
+    padding: 4px 6px;
+    font-size: 0.7rem;
+    color: white;
+    background-color: #e74c3c;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
