@@ -4,7 +4,7 @@ include("user_check.php")?>
 <?php
 
 echo '<!DOCTYPE html>';
-echo '<title>Property Listings</title>';
+echo '<title>Properties</title>';
 echo '<link rel="stylesheet" href="style.css">'; 
 echo '</head>';
 echo '<body>';

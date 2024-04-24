@@ -25,7 +25,7 @@ $results = $stmt->execute();
 
 <html>
 <head>
-    <title>Landlord Maintenance Dashboard</title>
+    <title>Maintenance</title>
 </head>
 <body>
 <h1>Maintenance Requests</h1>

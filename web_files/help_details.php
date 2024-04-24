@@ -35,9 +35,7 @@ $helpTopics = [
     5. Consent
     By using our site, you consent to our privacy policy.\n
     6. Changes to our Privacy Policy
-    If we decide to change our privacy policy, we will post those changes on this page. This policy was last modified on 23/04/2024.\n
-    7. Contacting Us
-    If there are any questions regarding this privacy policy, you may contact us using the contact page on the site.
+    If we decide to change our privacy policy, we will post those changes on this page. This policy was last modified on 23/04/2024.
     EOD
     ],
 ];

@@ -69,7 +69,7 @@ if ($result) {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Payment Tabs</title>
+    <title>Payments</title>
     <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
